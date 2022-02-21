@@ -171,11 +171,11 @@ return require("packer").startup(function()
     requires = { { "godlygeek/tabular" } }
   }
   use {
-    "Raimondi/delimitMate"
-    -- config = function()
-    --   vim.api.nvim_exec([[
-    --     let delimitMate_expand_cr = 1
-    --   ]], true)
-    -- end
+    "Raimondi/delimitMate",
+    config = function()
+      vim.api.nvim_exec([[
+        let delimitMate_expand_cr = 1
+      ]], true)
+    end
   }
 end)
