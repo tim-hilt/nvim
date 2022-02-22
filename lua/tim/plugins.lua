@@ -157,10 +157,19 @@ return require("packer").startup(function()
   use {
     "mickael-menu/zk-nvim",
     config = function()
-      require("zk").setup({ picker = "telescope" })
+      require("zk").setup({
+        picker = "telescope",
+        lsp = {
+          -- `config` is passed to `vim.lsp.start_client(config)`
+          config = {
+            cmd = { "zk", "lsp" },
+            name = "zk",
+            on_attach = require("tim.lsp-config").on_attach
+          }
+        }
+      })
     end
   }
-  -- use { "dhruvasagar/vim-table-mode" }
   use {
     "preservim/vim-markdown",
     config = function()
