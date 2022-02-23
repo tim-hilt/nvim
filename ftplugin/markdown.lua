@@ -66,14 +66,17 @@ vim.keymap.set("i", "<cr>", function()
   local l = vim.api.nvim_get_current_line()
   local _, num_pipes_current_line = string.gsub(l, "|", "")
   local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
-  local next_line = vim.api.nvim_buf_get_lines(0, r - 1, r, false)[1]
+  local next_line = vim.api.nvim_buf_get_lines(0, r, r + 1, false)[1]
   local _, num_pipes_next_line = string.gsub(next_line, "|", "")
 
-  if num_pipes_next_line ~= 0 then
+  if num_pipes_current_line > 0 and (l:match("%a") or l:match("%d")) and
+      num_pipes_next_line == 0 then
     local pipes = string.rep("|", num_pipes_current_line)
     vim.api.nvim_buf_set_lines(0, r, r, false, { pipes })
     vim.api.nvim_command("TableFormat")
     vim.api.nvim_win_set_cursor(0, { r + 1, 2 })
+  elseif num_pipes_current_line > 0 and not (l:match("%a") or l:match("%d")) then
+    vim.api.nvim_win_set_cursor(0, { r + 1, 0 })
   else
     vim.api.nvim_feedkeys("\n", "i", false)
   end
