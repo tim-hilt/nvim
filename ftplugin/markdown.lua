@@ -7,7 +7,7 @@ if require("zk.util").notebook_root(vim.fn.expand("%:p")) ~= nil then
       ":'<,'>ZkNewFromTitleSelection { dir = vim.fn.expand('%:p:h') }<CR>", opts)
 end
 
-vim.keymap.set("i", "<Tab>", function()
+vim.keymap.set({ "n", "i" }, "<Tab>", function()
   local curr_line = vim.api.nvim_get_current_line()
   local _, num_pipes = string.gsub(curr_line, "|", "")
 
@@ -62,6 +62,7 @@ end)
 
 -- TODO: Pass keybind if if-cases are not true
 
+-- TODO: If current line has a checkboxitem, repeat item on next line
 vim.keymap.set("i", "<cr>", function()
   local l = vim.api.nvim_get_current_line()
   local _, num_pipes_current_line = string.gsub(l, "|", "")
@@ -101,13 +102,19 @@ local isCheckedTodoItem = function(l)
   return l:match("^%s*- %[x%]")
 end
 
--- TODO: Add Timestamps when completed
+local hasTimestamp = function(l)
+  return l:match("^%s*- %[x%] %[%d%d%d%d%-%d%d%-%d%d% %d%d:%d%d:%d%d%]")
+end
+
 -- TODO: Move down when completed
-vim.keymap.set("n", "<C-CR>", function()
+vim.keymap.set({ "i", "n" }, "<C-CR>", function()
   local l = vim.api.nvim_get_current_line()
   local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
 
-  if not l:match("^%s*-") then
+  -- print(os.date("!%Y-%m-%d %T"))
+  if l:len() == 0 or l:match("^%s*$") then
+    return
+  elseif not l:match("^%s*-") then
     local leading_whitespace = l:match("^%s*")
     local after_whitespace = l:match("^%s*(.*)")
     local new_line = leading_whitespace .. "- " .. after_whitespace
@@ -116,14 +123,17 @@ vim.keymap.set("n", "<C-CR>", function()
     local new_line = l:gsub("-", "- [ ]", 1)
     vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
   elseif isTodoItem(l) then
-    local new_line = l:gsub("- %[ %]", "- [x]", 1)
+    local new_line = l:gsub("- %[ %]",
+                            "- [x] [" .. os.date("!%Y-%m-%d %T") .. "]", 1)
     vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
   elseif isCheckedTodoItem(l) then
-    local new_line = l:gsub("- %[x%]", "- [ ]")
+    local new_line = ""
+    if hasTimestamp(l) then
+      new_line = l:gsub("- %[x%] %[%d%d%d%d%-%d%d%-%d%d% %d%d:%d%d:%d%d%]",
+                        "- [ ]")
+    else
+      new_line = l:gsub("- %[x%]", "- [ ]")
+    end
     vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
   end
-end)
-
-vim.keymap.set("n", "<tab>", function()
-  vim.api.nvim_command("TableFormat")
 end)
