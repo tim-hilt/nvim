@@ -67,10 +67,16 @@ vim.keymap.set("i", "<cr>", function()
   local _, num_pipes_current_line = string.gsub(l, "|", "")
   local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
   local next_line = vim.api.nvim_buf_get_lines(0, r, r + 1, false)[1]
+
+  if next_line == nil then
+    vim.api.nvim_feedkeys("\n", "i", false)
+    return
+  end
+
   local _, num_pipes_next_line = string.gsub(next_line, "|", "")
 
-  if num_pipes_current_line > 0 and (l:match("%a") or l:match("%d")) and
-      num_pipes_next_line == 0 then
+  if num_pipes_current_line > 0 and l:match("[%d%a]") and num_pipes_next_line ==
+      0 then
     local pipes = string.rep("|", num_pipes_current_line)
     vim.api.nvim_buf_set_lines(0, r, r, false, { pipes })
     vim.api.nvim_command("TableFormat")
@@ -83,27 +89,29 @@ vim.keymap.set("i", "<cr>", function()
 end)
 
 local isBulletItem = function(l)
-  return l:sub(1, 1) == "-" and not (l:sub(1, 5) == "- [ ]") and
-             not (l:sub(1, 5) == "- [x]")
+  return l:match("^%s*- ") and not l:match("^%s*- %[ %]") and
+             not l:match("^%s*- %[x%]")
 end
 
 local isTodoItem = function(l)
-  return l:sub(1, 5) == "- [ ]"
+  return l:match("^%s*- %[ %]")
 end
 
 local isCheckedTodoItem = function(l)
-  return l:sub(1, 5) == "- [x]"
+  return l:match("^%s*- %[x%]")
 end
 
--- TODO: Preserve indentation -> Do with pattern matching as described at https://www.lua.org/pil/20.2.html
 -- TODO: Add Timestamps when completed
 -- TODO: Move down when completed
 vim.keymap.set("n", "<C-CR>", function()
   local l = vim.api.nvim_get_current_line()
   local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
 
-  if not (l:sub(1, 1) == "-") then
-    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { "- " .. l })
+  if not l:match("^%s*-") then
+    local leading_whitespace = l:match("^%s*")
+    local after_whitespace = l:match("^%s*(.*)")
+    local new_line = leading_whitespace .. "- " .. after_whitespace
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
   elseif isBulletItem(l) then
     local new_line = l:gsub("-", "- [ ]", 1)
     vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
