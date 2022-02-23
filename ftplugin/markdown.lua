@@ -95,7 +95,7 @@ local isCheckedTodoItem = function(l)
   return l:sub(1, 5) == "- [x]"
 end
 
--- TODO: Use correct indentation
+-- TODO: Preserve indentation -> Do with pattern matching as described at https://www.lua.org/pil/20.2.html
 -- TODO: Add Timestamps when completed
 -- TODO: Move down when completed
 vim.keymap.set("n", "<C-CR>", function()
