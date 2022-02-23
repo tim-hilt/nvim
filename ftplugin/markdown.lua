@@ -60,35 +60,6 @@ vim.keymap.set("i", "<S-Tab>", function()
 
 end)
 
--- TODO: Pass keybind if if-cases are not true
-
--- TODO: If current line has a checkboxitem, repeat item on next line
-vim.keymap.set("i", "<cr>", function()
-  local l = vim.api.nvim_get_current_line()
-  local _, num_pipes_current_line = string.gsub(l, "|", "")
-  local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
-  local next_line = vim.api.nvim_buf_get_lines(0, r, r + 1, false)[1]
-
-  if next_line == nil then
-    vim.api.nvim_feedkeys("\n", "i", false)
-    return
-  end
-
-  local _, num_pipes_next_line = string.gsub(next_line, "|", "")
-
-  if num_pipes_current_line > 0 and l:match("[%d%a]") and num_pipes_next_line ==
-      0 then
-    local pipes = string.rep("|", num_pipes_current_line)
-    vim.api.nvim_buf_set_lines(0, r, r, false, { pipes })
-    vim.api.nvim_command("TableFormat")
-    vim.api.nvim_win_set_cursor(0, { r + 1, 2 })
-  elseif num_pipes_current_line > 0 and not (l:match("%a") or l:match("%d")) then
-    vim.api.nvim_win_set_cursor(0, { r + 1, 0 })
-  else
-    vim.api.nvim_feedkeys("\n", "i", false)
-  end
-end)
-
 local isBulletItem = function(l)
   return l:match("^%s*- ") and not l:match("^%s*- %[ %]") and
              not l:match("^%s*- %[x%]")
@@ -97,6 +68,49 @@ end
 local isTodoItem = function(l)
   return l:match("^%s*- %[ %]")
 end
+
+-- TODO: Pass keybind if if-cases are not true
+
+vim.keymap.set("i", "<cr>", function()
+  local l = vim.api.nvim_get_current_line()
+  local _, num_pipes_current_line = string.gsub(l, "|", "")
+  local r, c = unpack(vim.api.nvim_win_get_cursor(0))
+  local next_line = vim.api.nvim_buf_get_lines(0, r, r + 1, false)[1]
+
+  local num_pipes_next_line = 0
+
+  if next_line ~= nil then
+    _, num_pipes_next_line = string.gsub(next_line, "|", "")
+  end
+
+  if num_pipes_current_line > 0 and l:match("[%d%a]") and num_pipes_next_line ==
+      0 then
+    local pipes = string.rep("|", num_pipes_current_line)
+    vim.api.nvim_buf_set_lines(0, r, r, false, { pipes })
+    vim.api.nvim_command("TableFormat")
+    vim.api.nvim_win_set_cursor(0, { r + 1, 2 })
+  elseif num_pipes_current_line > 0 and not (l:match("%a") or l:match("%d")) then
+    if next_line == nil then
+      vim.api.nvim_buf_set_lines(0, r, r + 1, false, { "" })
+    end
+    vim.api.nvim_win_set_cursor(0, { r + 1, 0 })
+  elseif isBulletItem(l:sub(1, c)) and not isTodoItem(l) then
+    -- Cut text after cursor and move it to next line
+    local leading_whitespace = l:match("^%s*")
+    vim.api.nvim_buf_set_lines(0, r, r, false, {
+      leading_whitespace .. "- "
+    })
+    vim.api.nvim_win_set_cursor(0, { r + 1, 9999 })
+  elseif isTodoItem(l:sub(1, c)) then
+    -- Cut text after cursor and move it to next line
+    local leading_whitespace = l:match("^%s*")
+    vim.api.nvim_buf_set_lines(0, r, r, false,
+                               { leading_whitespace .. "- [ ] " })
+    vim.api.nvim_win_set_cursor(0, { r + 1, 9999 })
+  else
+    vim.api.nvim_feedkeys("\n", "i", false)
+  end
+end)
 
 local isCheckedTodoItem = function(l)
   return l:match("^%s*- %[x%]")
