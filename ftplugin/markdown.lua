@@ -79,7 +79,39 @@ vim.keymap.set("i", "<cr>", function()
   end
 end)
 
--- TODO: Add keybinds for list-handling!
+local isBulletItem = function(l)
+  return l:sub(1, 1) == "-" and not (l:sub(1, 5) == "- [ ]") and
+             not (l:sub(1, 5) == "- [x]")
+end
+
+local isTodoItem = function(l)
+  return l:sub(1, 5) == "- [ ]"
+end
+
+local isCheckedTodoItem = function(l)
+  return l:sub(1, 5) == "- [x]"
+end
+
+-- TODO: Use correct indentation
+-- TODO: Add Timestamps when completed
+-- TODO: Move down when completed
+vim.keymap.set("n", "<C-CR>", function()
+  local l = vim.api.nvim_get_current_line()
+  local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
+
+  if not (l:sub(1, 1) == "-") then
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { "- " .. l })
+  elseif isBulletItem(l) then
+    local new_line = l:gsub("-", "- [ ]", 1)
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
+  elseif isTodoItem(l) then
+    local new_line = l:gsub("- %[ %]", "- [x]", 1)
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
+  elseif isCheckedTodoItem(l) then
+    local new_line = l:gsub("- %[x%]", "- [ ]")
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
+  end
+end)
 
 vim.keymap.set("n", "<tab>", function()
   vim.api.nvim_command("TableFormat")
