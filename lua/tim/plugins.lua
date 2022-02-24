@@ -77,8 +77,7 @@ return require("packer").startup(function()
       }
       ls.snippets = {
         javascript = {
-          ls.parser.parse_snippet("ecf",
-                                  "export const $1 = ($2)$3 => {\n  $4\n}$0"),
+          ls.parser.parse_snippet("ecf", "export const $1 = ($2)$3 => {\n  $4\n}$0"),
           ls.parser.parse_snippet("cf", "const $1 = ($2)$3 => {\n  $4\n}$0")
         },
         typescript = {
@@ -89,8 +88,7 @@ return require("packer").startup(function()
       ls.filetype_extend("javascriptreact", {
         "javascript", "typescript"
       })
-      ls.filetype_extend("typescriptreact",
-                         {
+      ls.filetype_extend("typescriptreact", {
         "javascript", "typescript", "javascriptreact"
       })
     end
@@ -125,6 +123,7 @@ return require("packer").startup(function()
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
   use {
     "ggandor/lightspeed.nvim",
+    commit = "4d8359a30b26ee5316d0e7c79af08b10cb17a57b",
     config = function()
       require("lightspeed").setup({
         labels = { "a", "r", "s", "t", "n", "e", "i", "o", "g", "m" },
@@ -139,7 +138,6 @@ return require("packer").startup(function()
       require("todo-comments").setup { signs = false }
     end
   }
-  -- use { "dag/vim-fish" }
   use {
     "numToStr/Comment.nvim",
     config = function()
@@ -160,7 +158,6 @@ return require("packer").startup(function()
       require("zk").setup({
         picker = "telescope",
         lsp = {
-          -- `config` is passed to `vim.lsp.start_client(config)`
           config = {
             cmd = { "zk", "lsp" },
             name = "zk",

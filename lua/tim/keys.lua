@@ -9,7 +9,7 @@ vim.cmd("let mapleader=\" \"")
 
 remap("v", "<leader>d", "\"_d", {})
 
-vim.keymap.set("n", "<leader>r", function()
+vim.keymap.set("n", "<leader>c", function()
   for name, _ in pairs(package.loaded) do
     if name:match("^tim") then
       package.loaded[name] = nil
