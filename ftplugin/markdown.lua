@@ -12,6 +12,9 @@ vim.keymap.set({ "n", "i" }, "<Tab>", function()
   local _, num_pipes = string.gsub(curr_line, "|", "")
 
   if num_pipes < 3 then
+    local r, c = unpack(vim.api.nvim_win_get_cursor(0))
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { "  " .. curr_line })
+    vim.api.nvim_win_set_cursor(0, { r, c + 2 })
     return
   else
     vim.api.nvim_command("TableFormat")
@@ -26,11 +29,15 @@ vim.keymap.set({ "n", "i" }, "<Tab>", function()
   end
 end)
 
-vim.keymap.set("i", "<S-Tab>", function()
+vim.keymap.set({ "n", "i" }, "<S-Tab>", function()
   local curr_line = vim.api.nvim_get_current_line()
   local _, num_pipes = string.gsub(curr_line, "|", "")
 
-  if num_pipes < 3 then
+  if num_pipes < 3 and curr_line:match("^  ") then
+    local r, c = unpack(vim.api.nvim_win_get_cursor(0))
+    local after_spaces = curr_line:match("^  (.*)")
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { after_spaces })
+    vim.api.nvim_win_set_cursor(0, { r, c - 2 })
     return
   else
     vim.api.nvim_command("TableFormat")
@@ -69,8 +76,6 @@ local isTodoItem = function(l)
   return l:match("^%s*- %[ %]")
 end
 
--- TODO: Pass keybind if if-cases are not true
-
 vim.keymap.set("i", "<cr>", function()
   local l = vim.api.nvim_get_current_line()
   local _, num_pipes_current_line = string.gsub(l, "|", "")
@@ -95,18 +100,24 @@ vim.keymap.set("i", "<cr>", function()
     end
     vim.api.nvim_win_set_cursor(0, { r + 1, 0 })
   elseif isBulletItem(l:sub(1, c)) and not isTodoItem(l) then
-    -- Cut text after cursor and move it to next line
+    -- TODO: Cut text after cursor and move it to next line
     local leading_whitespace = l:match("^%s*")
-    vim.api.nvim_buf_set_lines(0, r, r, false, {
-      leading_whitespace .. "- "
-    })
-    vim.api.nvim_win_set_cursor(0, { r + 1, 9999 })
-  elseif isTodoItem(l:sub(1, c)) then
-    -- Cut text after cursor and move it to next line
-    local leading_whitespace = l:match("^%s*")
+    local before_cursor = l:sub(1, c)
+    local after_cursor = l:sub(c + 1)
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { before_cursor })
+    local next_line_prefix = leading_whitespace .. "- "
     vim.api.nvim_buf_set_lines(0, r, r, false,
-                               { leading_whitespace .. "- [ ] " })
-    vim.api.nvim_win_set_cursor(0, { r + 1, 9999 })
+                               { next_line_prefix .. after_cursor })
+    vim.api.nvim_win_set_cursor(0, { r + 1, next_line_prefix:len() })
+  elseif isTodoItem(l:sub(1, c)) then
+    local leading_whitespace = l:match("^%s*")
+    local before_cursor = l:sub(1, c)
+    local after_cursor = l:sub(c + 1)
+    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { before_cursor })
+    local next_line_prefix = leading_whitespace .. "- [ ] "
+    vim.api.nvim_buf_set_lines(0, r, r, false,
+                               { next_line_prefix .. after_cursor })
+    vim.api.nvim_win_set_cursor(0, { r + 1, next_line_prefix:len() })
   else
     vim.api.nvim_feedkeys("\n", "i", false)
   end
@@ -125,7 +136,6 @@ vim.keymap.set({ "i", "n" }, "<C-CR>", function()
   local l = vim.api.nvim_get_current_line()
   local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
 
-  -- print(os.date("!%Y-%m-%d %T"))
   if l:len() == 0 or l:match("^%s*$") then
     return
   elseif not l:match("^%s*-") then
