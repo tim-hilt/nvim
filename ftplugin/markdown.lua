@@ -1,3 +1,11 @@
+local isCheckedTodoItem = function(l)
+  return l:match("^%s*- %[x%]")
+end
+
+local hasTimestamp = function(l)
+  return l:match("^%s*- %[x%] %[%d%d%d%d%-%d%d%-%d%d% %d%d:%d%d:%d%d%]")
+end
+
 if require("zk.util").notebook_root(vim.fn.expand("%:p")) ~= nil then
   local function map(...)
     vim.api.nvim_buf_set_keymap(0, ...)
@@ -22,7 +30,7 @@ vim.keymap.set({ "n", "i" }, "<Tab>", function()
 
   curr_line = vim.api.nvim_get_current_line() -- Have to call again, because line has changed
   local r, c = unpack(vim.api.nvim_win_get_cursor(0))
-  local start = string.find(curr_line, "|", c + 1)
+  local start = curr_line:find("|", c + 1)
 
   if start ~= nil and start < string.len(curr_line) then
     vim.api.nvim_win_set_cursor(0, { r, start + 1 })
@@ -68,7 +76,7 @@ vim.keymap.set({ "n", "i" }, "<S-Tab>", function()
 end)
 
 local isBulletItem = function(l)
-  return l:match("^%s*- ") and not l:match("^%s*- %[ %]") and
+  return l:match("^%s*-") and not l:match("^%s*- %[ %]") and
              not l:match("^%s*- %[x%]")
 end
 
@@ -99,42 +107,66 @@ vim.keymap.set("i", "<cr>", function()
       vim.api.nvim_buf_set_lines(0, r, r + 1, false, { "" })
     end
     vim.api.nvim_win_set_cursor(0, { r + 1, 0 })
-  elseif isBulletItem(l:sub(1, c)) and not isTodoItem(l) then
-    -- TODO: Cut text after cursor and move it to next line
+  elseif isBulletItem(l) and not isTodoItem(l) then
     local leading_whitespace = l:match("^%s*")
     local before_cursor = l:sub(1, c)
     local after_cursor = l:sub(c + 1)
-    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { before_cursor })
-    local next_line_prefix = leading_whitespace .. "- "
-    vim.api.nvim_buf_set_lines(0, r, r, false,
-                               { next_line_prefix .. after_cursor })
-    vim.api.nvim_win_set_cursor(0, { r + 1, next_line_prefix:len() })
-  elseif isTodoItem(l:sub(1, c)) then
+    local bullet_item_prefix = leading_whitespace .. "- "
+    if not isBulletItem(before_cursor) then
+      vim.api.nvim_buf_set_lines(0, r - 1, r, false, {
+        bullet_item_prefix
+      })
+      vim.api.nvim_buf_set_lines(0, r, r, false, {
+        bullet_item_prefix .. after_cursor:match("^%s*- (.*)")
+      })
+    else
+      before_cursor = before_cursor:match("^%s*- ") or before_cursor .. " "
+      vim.api.nvim_buf_set_lines(0, r - 1, r, false, { before_cursor })
+      vim.api.nvim_buf_set_lines(0, r, r, false,
+                                 { bullet_item_prefix .. after_cursor })
+    end
+    vim.api.nvim_win_set_cursor(0, { r + 1, bullet_item_prefix:len() })
+  elseif isTodoItem(l) or isCheckedTodoItem(l) then
     local leading_whitespace = l:match("^%s*")
     local before_cursor = l:sub(1, c)
     local after_cursor = l:sub(c + 1)
-    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { before_cursor })
-    local next_line_prefix = leading_whitespace .. "- [ ] "
-    vim.api.nvim_buf_set_lines(0, r, r, false,
-                               { next_line_prefix .. after_cursor })
-    vim.api.nvim_win_set_cursor(0, { r + 1, next_line_prefix:len() })
+    local todo_item_prefix = leading_whitespace .. "- [ ] "
+    local s, e = l:find("^%s*- %[ %]")
+    local cursor_on_todoitem = s <= c and c < e
+
+    if cursor_on_todoitem then
+      vim.api.nvim_buf_set_lines(0, r - 1, r, false,
+                                 { leading_whitespace .. "- [ ] " })
+      vim.api.nvim_buf_set_lines(0, r, r, false, {
+        todo_item_prefix .. l:match("^%s*- %[ %] (.*)")
+      })
+      -- Do sth
+    elseif isTodoItem(before_cursor) or isCheckedTodoItem(before_cursor) then
+      if not before_cursor:match("^%s*- %[ %] ") then
+        before_cursor = before_cursor .. " "
+      end
+      vim.api.nvim_buf_set_lines(0, r - 1, r, false, { before_cursor })
+      vim.api.nvim_buf_set_lines(0, r, r, false,
+                                 { todo_item_prefix .. after_cursor })
+    else
+      vim.api.nvim_buf_set_lines(0, r - 1, r, false, {
+        todo_item_prefix
+      })
+      vim.api.nvim_buf_set_lines(0, r, r, false, {
+        todo_item_prefix .. after_cursor:match("^%s*- %[ %] (.*)")
+      })
+    end
+    vim.api.nvim_win_set_cursor(0, { r + 1, todo_item_prefix:len() })
+
   else
     vim.api.nvim_feedkeys("\n", "i", false)
   end
 end)
 
-local isCheckedTodoItem = function(l)
-  return l:match("^%s*- %[x%]")
-end
-
-local hasTimestamp = function(l)
-  return l:match("^%s*- %[x%] %[%d%d%d%d%-%d%d%-%d%d% %d%d:%d%d:%d%d%]")
-end
-
 -- TODO: Move down when completed
 vim.keymap.set({ "i", "n" }, "<C-CR>", function()
   local l = vim.api.nvim_get_current_line()
-  local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  local r, c = unpack(vim.api.nvim_win_get_cursor(0))
 
   if l:len() == 0 or l:match("^%s*$") then
     return
@@ -143,21 +175,30 @@ vim.keymap.set({ "i", "n" }, "<C-CR>", function()
     local after_whitespace = l:match("^%s*(.*)")
     local new_line = leading_whitespace .. "- " .. after_whitespace
     vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
+    vim.api.nvim_win_set_cursor(0, { r, c + 2 })
   elseif isBulletItem(l) then
     local new_line = l:gsub("-", "- [ ]", 1)
     vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
+    vim.api.nvim_win_set_cursor(0, { r, c + 5 })
   elseif isTodoItem(l) then
     local new_line = l:gsub("- %[ %]",
                             "- [x] [" .. os.date("!%Y-%m-%d %T") .. "]", 1)
     vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
+    vim.api.nvim_win_set_cursor(0, { r, c + 22 })
   elseif isCheckedTodoItem(l) then
-    local new_line = ""
     if hasTimestamp(l) then
-      new_line = l:gsub("- %[x%] %[%d%d%d%d%-%d%d%-%d%d% %d%d:%d%d:%d%d%]",
-                        "- [ ]")
+      local new_line = l:gsub(
+                           "- %[x%] %[%d%d%d%d%-%d%d%-%d%d% %d%d:%d%d:%d%d%]",
+                           "- [ ]")
+      vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
+      -- TODO: Figure out a good way to preserve cursor-position:
+      --       - If cusor is after timestamp, set cursor to the position in current word
+      --         (idea: Count chars after timestamp and calculate position from that)
+      --       - If cursor is inside of timestamp, set cursor after empty checkbox
+      --       - If cursor is before timestamp, don't modify it
     else
-      new_line = l:gsub("- %[x%]", "- [ ]")
+      local new_line = l:gsub("- %[x%]", "- [ ]")
+      vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
     end
-    vim.api.nvim_buf_set_lines(0, r - 1, r, false, { new_line })
   end
 end)
