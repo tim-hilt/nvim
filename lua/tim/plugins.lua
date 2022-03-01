@@ -183,10 +183,6 @@ return require("packer").startup(function()
       ]], true)
     end
   }
-  use {
-    "lewis6991/impatient.nvim",
-    config = function()
-      require("impatient").enable_profile()
-    end
-  }
+  use { "lewis6991/impatient.nvim" }
+  use { "dstein64/vim-startuptime" }
 end)
