@@ -123,7 +123,6 @@ return require("packer").startup(function()
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
   use {
     "ggandor/lightspeed.nvim",
-    commit = "4d8359a30b26ee5316d0e7c79af08b10cb17a57b",
     config = function()
       require("lightspeed").setup({
         labels = { "a", "r", "s", "t", "n", "e", "i", "o", "g", "m" },
@@ -182,6 +181,12 @@ return require("packer").startup(function()
       vim.api.nvim_exec([[
         let delimitMate_expand_cr = 1
       ]], true)
+    end
+  }
+  use {
+    "lewis6991/impatient.nvim",
+    config = function()
+      require("impatient").enable_profile()
     end
   }
 end)
