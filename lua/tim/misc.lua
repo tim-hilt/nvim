@@ -24,17 +24,14 @@ vim.api.nvim_exec([[
   filetype plugin indent on
   set noswapfile
   set noshowmode
-
-  augroup FormatAutogroup
-    autocmd!
-    autocmd BufWritePost *.lua,*.json,*.html,*.js,*.ts,*.tsx FormatWrite
-  augroup END
-
-  augroup neovim_last_position
-    autocmd!
-    autocmd BufReadPost *
-      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-      \ |   exe "normal! g`\""
-      \ | endif
-  augroup END
 ]], true)
+
+vim.api.nvim_create_augroup("format_on_save", { clear = true })
+vim.api.nvim_create_autocmd({
+  "BufWritePost *.lua,*.json,*.html,*.js,*.ts,*.tsx"
+}, { command = "FormatWrite", group = "format_on_save" })
+
+vim.api.nvim_create_augroup("neovim_last_position", { clear = true })
+vim.api.nvim_create_autocmd({
+  [[BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]]
+}, { command = "", group = "neovim_last_position" })
