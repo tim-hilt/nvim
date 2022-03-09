@@ -212,7 +212,8 @@ vim.keymap.set("i", "<cr>", function()
   elseif is_checked_todo_item(l) then
     handle_checked_todo_item()
   else
-    vim.api.nvim_feedkeys("\n", "i", false)
+    -- TODO: Should check, if delimitMate is available! https://github.com/wbthomason/packer.nvim/issues/167
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Plug>delimitMateCR", true, true, true), "m", true)
   end
 end)
 

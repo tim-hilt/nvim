@@ -26,12 +26,15 @@ vim.api.nvim_exec([[
   set noshowmode
 ]], true)
 
-vim.api.nvim_create_augroup("format_on_save", { clear = true })
+local format_on_save = "format_on_save"
+vim.api.nvim_create_augroup(format_on_save, { clear = true })
 vim.api.nvim_create_autocmd({
   "BufWritePost *.lua,*.json,*.html,*.js,*.ts,*.tsx"
-}, { command = "FormatWrite", group = "format_on_save" })
+}, { command = "FormatWrite", group = format_on_save })
 
-vim.api.nvim_create_augroup("neovim_last_position", { clear = true })
-vim.api.nvim_create_autocmd({
-  [[BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]]
-}, { command = "", group = "neovim_last_position" })
+local neovim_last_position = "neovim_last_position"
+vim.api.nvim_create_augroup(neovim_last_position, { clear = true })
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+  command = [[if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]],
+  group = neovim_last_position
+})

@@ -104,14 +104,15 @@ return require("packer").startup(function()
   use {
     "projekt0n/github-nvim-theme",
     config = function()
-      require("github-theme").setup()
+      require("github-theme").setup({})
     end
   }
   use {
     "nvim-lualine/lualine.nvim",
+    after = "github-nvim-theme",
     requires = { "kyazdani42/nvim-web-devicons", opt = true },
     config = function()
-      require("lualine").setup({ options = { theme = "github" } })
+      require("lualine").setup({ options = { theme = "auto" } })
     end
   }
   use {
@@ -121,15 +122,6 @@ return require("packer").startup(function()
     after = { "telescope-fzf-native.nvim" }
   }
   use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
-  use {
-    "ggandor/lightspeed.nvim",
-    config = function()
-      require("lightspeed").setup({
-        labels = { "a", "r", "s", "t", "n", "e", "i", "o", "g", "m" },
-        ignore_case = false
-      })
-    end
-  }
   use { "bogado/file-line" }
   use {
     "folke/todo-comments.nvim",
@@ -147,7 +139,7 @@ return require("packer").startup(function()
   use {
     "akinsho/toggleterm.nvim",
     config = function()
-      require("toggleterm").setup({})
+      require"toggleterm".setup { open_mapping = [[<c-t>]] }
     end
   }
   use { "junegunn/rainbow_parentheses.vim" }
@@ -179,10 +171,22 @@ return require("packer").startup(function()
     "Raimondi/delimitMate",
     config = function()
       vim.api.nvim_exec([[
-        let delimitMate_expand_cr = 1
+        let delimitMate_nesting_quotes = ['`']
+        let delimitMate_expand_cr = 2
+        let delimitMate_expand_inside_quotes = 1
       ]], true)
     end
   }
   use { "lewis6991/impatient.nvim" }
   use { "dstein64/vim-startuptime" }
+  use {
+    "phaazon/hop.nvim",
+    config = function()
+      local hop = require("hop")
+      hop.setup({ keys = "tnseriaodhvk" })
+      vim.keymap.set("n", "s", function()
+        hop.hint_char2({})
+      end)
+    end
+  }
 end)
