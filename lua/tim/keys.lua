@@ -1,6 +1,5 @@
 local remap = vim.api.nvim_set_keymap
 
-remap("i", "mn", "<ESC>", {})
 remap("i", "<S-CR>", "<ESC>o", {})
 remap("i", "<C-BS>", "<C-w>", {})
 remap("n", "<SPACE>", "<nop>", {})
