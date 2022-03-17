@@ -98,8 +98,9 @@ return require("packer").startup(function()
     config = require("tim.cmp-config").config,
     requires = {
       { "hrsh7th/cmp-nvim-lsp" }, { "L3MON4D3/LuaSnip" },
-      { "saadparwaiz1/cmp_luasnip" }
-    }
+      { "saadparwaiz1/cmp_luasnip", event = "InsertCharPre" }
+    },
+    event = "InsertEnter"
   }
   use {
     "projekt0n/github-nvim-theme",
@@ -194,7 +195,7 @@ return require("packer").startup(function()
     "max397574/better-escape.nvim",
     config = function()
       require("better_escape").setup({
-        mapping = { "ne" },
+        mapping = { "mn" },
         timeout = 200
       })
     end

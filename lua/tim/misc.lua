@@ -15,12 +15,14 @@ vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.cindent = true
 vim.o.pyxversion = 3
+vim.o.bri = true
+vim.o.briopt = "min:20,shift:4,sbr,list:2"
+vim.o.lbr = true
+vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
 
-vim.api.nvim_set_var("rainbow_active", 1)
 vim.api.nvim_set_var("python3_host_prog", "/usr/bin/python")
 
 vim.api.nvim_exec([[
-  set clipboard+=unnamedplus
   filetype plugin indent on
   set noswapfile
   set noshowmode
@@ -38,3 +40,14 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   command = [[if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]],
   group = neovim_last_position
 })
+
+local disabled_built_ins = {
+  "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers",
+  "gzip", "zip", "zipPlugin", "tar", "tarPlugin", "getscript",
+  "getscriptPlugin", "vimball", "vimballPlugin", "2html_plugin",
+  "logipat", "rrhelper", "spellfile_plugin", "matchit"
+}
+
+for _, plugin in pairs(disabled_built_ins) do
+  vim.g["loaded_" .. plugin] = 1
+end
