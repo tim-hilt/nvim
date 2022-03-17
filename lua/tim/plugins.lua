@@ -169,16 +169,6 @@ return require("packer").startup(function()
     end,
     requires = { { "godlygeek/tabular" } }
   }
-  -- use {
-  --   "Raimondi/delimitMate",
-  --   config = function()
-  --     vim.api.nvim_exec([[
-  --       let delimitMate_nesting_quotes = ['`']
-  --       let delimitMate_expand_cr = 2
-  --       let delimitMate_expand_inside_quotes = 1
-  --     ]], true)
-  --   end
-  -- }
   use {
     "windwp/nvim-autopairs",
     config = function()
