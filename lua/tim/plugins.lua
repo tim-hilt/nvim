@@ -100,7 +100,8 @@ return require("packer").startup(function()
       { "hrsh7th/cmp-nvim-lsp" }, { "L3MON4D3/LuaSnip" },
       { "saadparwaiz1/cmp_luasnip", event = "InsertCharPre" }
     },
-    event = "InsertEnter"
+    event = "InsertEnter",
+    after = "nvim-autopairs"
   }
   use {
     "projekt0n/github-nvim-theme",
@@ -168,14 +169,20 @@ return require("packer").startup(function()
     end,
     requires = { { "godlygeek/tabular" } }
   }
+  -- use {
+  --   "Raimondi/delimitMate",
+  --   config = function()
+  --     vim.api.nvim_exec([[
+  --       let delimitMate_nesting_quotes = ['`']
+  --       let delimitMate_expand_cr = 2
+  --       let delimitMate_expand_inside_quotes = 1
+  --     ]], true)
+  --   end
+  -- }
   use {
-    "Raimondi/delimitMate",
+    "windwp/nvim-autopairs",
     config = function()
-      vim.api.nvim_exec([[
-        let delimitMate_nesting_quotes = ['`']
-        let delimitMate_expand_cr = 2
-        let delimitMate_expand_inside_quotes = 1
-      ]], true)
+      require("nvim-autopairs").setup({})
     end
   }
   use { "lewis6991/impatient.nvim" }

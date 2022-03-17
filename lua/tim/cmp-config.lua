@@ -2,6 +2,7 @@ local M = {}
 
 M.config = function()
   local cmp = require("cmp")
+  local cmp_autopairs = require("nvim-autopairs.completion.cmp")
   local luasnip = require("luasnip")
 
   cmp.setup({
@@ -24,9 +25,7 @@ M.config = function()
         if cmp.visible() then
           cmp.select_next_item()
         elseif luasnip.expand_or_jumpable() then
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes(
-                              "<Plug>luasnip-expand-or-jump", true, true, true),
-                          "")
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
         else
           fallback()
         end
@@ -36,8 +35,7 @@ M.config = function()
         if cmp.visible() then
           cmp.select_prev_item()
         elseif luasnip.jumpable(-1) then
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes(
-                              "<Plug>luasnip-jump-prev", true, true, true), "")
+          vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
         else
           fallback()
         end
@@ -47,6 +45,10 @@ M.config = function()
       { name = "nvim_lsp" }, { name = "luasnip" }
     })
   })
+
+  cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({
+    map_char = { tex = "" }
+  }))
 end
 
 return M
