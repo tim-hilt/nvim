@@ -212,7 +212,8 @@ vim.keymap.set("i", "<cr>", function()
   elseif is_checked_todo_item(l) then
     handle_checked_todo_item()
   else
-    require("nvim-autopairs").autopairs_cr()
+    local key = require("nvim-autopairs").autopairs_cr()
+    vim.api.nvim_feedkeys(key, "m", true)
   end
 end)
 

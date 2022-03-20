@@ -18,6 +18,8 @@ vim.o.pyxversion = 3
 vim.o.bri = true
 vim.o.briopt = "min:20,shift:4,sbr,list:2"
 vim.o.lbr = true
+vim.o.signcolumn = "yes"
+vim.o.laststatus = 3
 
 vim.api.nvim_set_var("python3_host_prog", "/usr/bin/python")
 
