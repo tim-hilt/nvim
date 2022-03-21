@@ -114,7 +114,9 @@ return require("packer").startup(function()
     after = "github-nvim-theme",
     requires = { "kyazdani42/nvim-web-devicons", opt = true },
     config = function()
-      require("lualine").setup({ options = { theme = "auto" } })
+      require("lualine").setup({
+        options = { theme = "auto", globalstatus = true }
+      })
     end
   }
   use {
@@ -195,6 +197,24 @@ return require("packer").startup(function()
         mapping = { "mn" },
         timeout = 200
       })
+    end
+  }
+  use {
+    "Pocco81/TrueZen.nvim",
+    config = function()
+      require("true-zen").setup({ integrations = { lualine = true } })
+      vim.keymap.set("n", "<leader>zz", function()
+        require("true-zen.main").main(4, "toggle")
+      end)
+    end
+  }
+  use {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function()
+      require("indent_blankline").setup {
+        show_current_context = true,
+        show_current_context_start = true
+      }
     end
   }
 end)
