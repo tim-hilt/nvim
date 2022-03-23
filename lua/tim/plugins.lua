@@ -200,11 +200,14 @@ return require("packer").startup(function()
     end
   }
   use {
-    "Pocco81/TrueZen.nvim",
+    "folke/zen-mode.nvim",
     config = function()
-      require("true-zen").setup({ integrations = { lualine = true } })
-      vim.keymap.set("n", "<leader>zz", function()
-        require("true-zen.main").main(4, "toggle")
+      local zen = require("zen-mode")
+      zen.setup({
+        window = { backdrop = 1, options = { number = false } }
+      })
+      vim.keymap.set("n", "<leader>z", function()
+        zen.toggle()
       end)
     end
   }
