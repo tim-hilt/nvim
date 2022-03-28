@@ -6,7 +6,7 @@ if require("zk.util").notebook_root(vim.fn.expand("%:p")) ~= nil then
   map("v", "<leader>n", ":'<,'>ZkNewFromTitleSelection { dir = vim.fn.expand('%:p:h') }<CR>", opts)
 end
 
-vim.keymap.set({ "n", "i" }, "<Tab>", function()
+local handle_tab = function()
   local curr_line = vim.api.nvim_get_current_line()
   local _, num_pipes = curr_line:gsub("|", "")
 
@@ -26,7 +26,9 @@ vim.keymap.set({ "n", "i" }, "<Tab>", function()
   if start ~= nil and start < curr_line:len() then
     vim.api.nvim_win_set_cursor(0, { r, start + 1 })
   end
-end)
+end
+
+vim.keymap.set({ "n", "i" }, "<Tab>", handle_tab)
 
 vim.keymap.set({ "n", "i" }, "<S-Tab>", function()
   local curr_line = vim.api.nvim_get_current_line()

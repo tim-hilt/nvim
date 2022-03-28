@@ -98,9 +98,8 @@ return require("packer").startup(function()
     config = require("tim.cmp-config").config,
     requires = {
       { "hrsh7th/cmp-nvim-lsp" }, { "L3MON4D3/LuaSnip" },
-      { "saadparwaiz1/cmp_luasnip", event = "InsertCharPre" }
+      { "saadparwaiz1/cmp_luasnip" }
     },
-    event = "InsertEnter",
     after = "nvim-autopairs"
   }
   use {
@@ -220,4 +219,26 @@ return require("packer").startup(function()
       }
     end
   }
+  -- use {
+  --   "ray-x/go.nvim",
+  --   config = function()
+  --     local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  --     require("go").setup({
+  --       lsp_cfg = {
+  --         on_attach = require("tim.lsp-config").on_attach,
+  --         capabilities = capabilities,
+  --         flags = { debounce_text_changes = 150 }
+  --       }
+  --     })
+  --     local format_on_save = "format_on_save"
+  --     vim.api.nvim_create_augroup(format_on_save, { clear = true })
+  --     vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  --       pattern = "*.go",
+  --       callback = function()
+  --         require("go.format").goimport()
+  --       end,
+  --       group = format_on_save
+  --     })
+  --   end
+  -- }
 end)
