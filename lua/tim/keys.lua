@@ -42,3 +42,18 @@ vim.keymap.set("n", "<leader>s", function()
   end
   require("telescope.builtin").live_grep(opts)
 end)
+
+vim.api.nvim_exec([[
+  nnoremap <up> <nop>
+  nnoremap <down> <nop>
+  nnoremap <left> <nop>
+  nnoremap <right> <nop>
+  inoremap <up> <nop>
+  inoremap <down> <nop>
+  inoremap <left> <nop>
+  inoremap <right> <nop>
+  vnoremap <up> <nop>
+  vnoremap <down> <nop>
+  vnoremap <left> <nop>
+  vnoremap <right> <nop>
+]], true)

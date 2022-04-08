@@ -4,7 +4,7 @@ M.config = function()
   require("nvim-treesitter.configs").setup {
     ensure_installed = {
       "go", "tsx", "typescript", "javascript", "lua", "fish", "yaml",
-      "comment"
+      "comment", "cpp"
     },
     highlight = { enable = true },
     autotag = { enable = true },

@@ -56,7 +56,19 @@ return require("packer").startup(function()
           html = { prettierConfig },
           javascript = { prettierConfig },
           typescript = { prettierConfig },
-          typescriptreact = { prettierConfig }
+          typescriptreact = { prettierConfig },
+          cpp = {
+            function()
+              return {
+                exe = "clang-format",
+                args = {
+                  "--assume-filename", vim.api.nvim_buf_get_name(0)
+                },
+                stdin = true,
+                cwd = vim.fn.expand("%:p:h") -- Run clang-format in cwd of the file
+              }
+            end
+          }
         }
       })
     end
@@ -166,6 +178,7 @@ return require("packer").startup(function()
     config = function()
       vim.api.nvim_exec([[
         let g:vim_markdown_folding_disabled = 1
+        let g:vim_markdown_new_list_item_indent = 0
       ]], true)
     end,
     requires = { { "godlygeek/tabular" } }

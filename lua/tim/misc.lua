@@ -20,6 +20,7 @@ vim.o.briopt = "min:20,shift:4,sbr,list:2"
 vim.o.lbr = true
 vim.o.signcolumn = "yes"
 vim.o.laststatus = 3
+vim.o.mouse = nil
 
 vim.api.nvim_set_var("python3_host_prog", "/usr/bin/python")
 
@@ -33,7 +34,7 @@ vim.api.nvim_exec([[
 local format_on_save = "format_on_save"
 vim.api.nvim_create_augroup(format_on_save, { clear = true })
 vim.api.nvim_create_autocmd({
-  "BufWritePost *.lua,*.json,*.html,*.js,*.ts,*.tsx"
+  "BufWritePost *.lua,*.json,*.html,*.js,*.ts,*.tsx,*.cpp"
 }, { command = "FormatWrite", group = format_on_save })
 
 local neovim_last_position = "neovim_last_position"
