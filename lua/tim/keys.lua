@@ -56,4 +56,6 @@ vim.api.nvim_exec([[
   vnoremap <down> <nop>
   vnoremap <left> <nop>
   vnoremap <right> <nop>
+
+  vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 ]], true)
