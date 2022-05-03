@@ -21,8 +21,11 @@ vim.o.lbr = true
 vim.o.signcolumn = "yes"
 vim.o.laststatus = 3
 vim.o.mouse = nil
+vim.o.updatetime = 250
 
 vim.api.nvim_set_var("python3_host_prog", "/usr/bin/python")
+
+vim.diagnostic.config({ virtual_text = false })
 
 vim.api.nvim_exec([[
   set clipboard+=unnamedplus
@@ -42,6 +45,15 @@ vim.api.nvim_create_augroup(neovim_last_position, { clear = true })
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   command = [[if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]],
   group = neovim_last_position
+})
+
+local diagnostics_on_hover = "diagnostics_on_hover"
+vim.api.nvim_create_augroup(diagnostics_on_hover, { clear = true })
+vim.api.nvim_create_autocmd({ "CursorHold,CursorHoldI *" }, {
+  callback = function()
+    vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
+  end,
+  group = diagnostics_on_hover
 })
 
 local disabled_built_ins = {

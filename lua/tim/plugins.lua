@@ -201,7 +201,6 @@ return require("packer").startup(function()
       end)
     end
   }
-  use { "nathom/filetype.nvim" }
   use {
     "max397574/better-escape.nvim",
     config = function()
@@ -254,4 +253,11 @@ return require("packer").startup(function()
   --     })
   --   end
   -- }
+  use {
+    "cuducos/yaml.nvim",
+    requires = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim"
+    }
+  }
 end)
