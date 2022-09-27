@@ -196,12 +196,12 @@ vim.keymap.set("i", "<cr>", function()
   end
 
   -- Table stuff
-  if num_pipes_current_line > 0 and l:match("[%d%a]") and num_pipes_next_line == 0 then
+  if num_pipes_current_line > 0 and l:match("[%d%a]") then
     local pipes = ("|"):rep(num_pipes_current_line)
     vim.api.nvim_buf_set_lines(0, r, r, false, { pipes })
     vim.api.nvim_command("TableFormat")
     vim.api.nvim_win_set_cursor(0, { r + 1, 2 })
-  elseif num_pipes_current_line > 0 and not (l:match("%a") or l:match("%d")) then
+  elseif num_pipes_current_line > 0 and not (l:match("%a") or l:match("%d")) then -- If last line
     if next_line == nil then
       vim.api.nvim_buf_set_lines(0, r, r + 1, false, { "" })
     end

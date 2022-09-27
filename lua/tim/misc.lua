@@ -22,6 +22,8 @@ vim.o.signcolumn = "yes"
 vim.o.laststatus = 3
 vim.o.mouse = nil
 
+vim.diagnostic.config { virtual_text = false }
+
 vim.api.nvim_set_var("python3_host_prog", "/usr/bin/python")
 
 vim.api.nvim_exec([[
@@ -36,13 +38,6 @@ vim.api.nvim_create_augroup(format_on_save, { clear = true })
 vim.api.nvim_create_autocmd({
   "BufWritePost *.lua,*.json,*.html,*.js,*.ts,*.tsx,*.cpp"
 }, { command = "FormatWrite", group = format_on_save })
-
-local neovim_last_position = "neovim_last_position"
-vim.api.nvim_create_augroup(neovim_last_position, { clear = true })
-vim.api.nvim_create_autocmd({ "BufReadPost" }, {
-  command = [[if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]],
-  group = neovim_last_position
-})
 
 local disabled_built_ins = {
   "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers",
