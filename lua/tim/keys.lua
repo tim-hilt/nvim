@@ -3,47 +3,49 @@ local remap = vim.api.nvim_set_keymap
 remap("i", "<S-CR>", "<ESC>o", {})
 remap("i", "<C-BS>", "<C-w>", {})
 remap("n", "<SPACE>", "<nop>", {})
+remap("n", "'", ":wa<CR>", {})
 
-vim.cmd("let mapleader=\" \"")
+vim.cmd('let mapleader=" "')
 
-remap("v", "<leader>d", "\"_d", {})
+remap("v", "<leader>d", '"_d', {})
 
 vim.keymap.set("n", "<leader>c", function()
-  for name, _ in pairs(package.loaded) do
-    if name:match("^tim") then
-      package.loaded[name] = nil
-    end
-  end
-  dofile(vim.env.MYVIMRC)
-  print("Config reloaded")
+	for name, _ in pairs(package.loaded) do
+		if name:match("^tim") then
+			package.loaded[name] = nil
+		end
+	end
+	dofile(vim.env.MYVIMRC)
+	print("Config reloaded")
 end)
 
 vim.keymap.set("n", "<leader>,", function()
-  require("telescope.builtin").buffers({ sort_lastused = true })
+	require("telescope.builtin").buffers({ sort_lastused = true })
 end)
 
 vim.keymap.set("n", "<leader>.", function()
-  require("telescope.builtin").find_files({})
+	require("telescope.builtin").find_files({})
 end)
 
 vim.keymap.set("n", "<leader><leader>", function()
-  local builtin = require("telescope.builtin")
-  local ok = pcall(builtin.git_files, {})
-  if not ok then
-    builtin.find_files({})
-  end
+	local builtin = require("telescope.builtin")
+	local ok = pcall(builtin.git_files, {})
+	if not ok then
+		builtin.find_files({})
+	end
 end)
 
 vim.keymap.set("n", "<leader>s", function()
-  local opts = {}
-  local git_dir = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-  if git_dir:find("^fatal") == nil then
-    opts.cwd = git_dir
-  end
-  require("telescope.builtin").live_grep(opts)
+	local opts = {}
+	local git_dir = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+	if git_dir:find("^fatal") == nil then
+		opts.cwd = git_dir
+	end
+	require("telescope.builtin").live_grep(opts)
 end)
 
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+	[[
   nnoremap <up> <nop>
   nnoremap <down> <nop>
   nnoremap <left> <nop>
@@ -58,4 +60,6 @@ vim.api.nvim_exec([[
   vnoremap <right> <nop>
 
   vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-]], true)
+]],
+	true
+)
