@@ -23,6 +23,8 @@ vim.keymap.set("n", "<leader>,", function()
 	require("telescope.builtin").buffers({ sort_lastused = true })
 end)
 
+vim.keymap.set("n", "K", "<cmd>lua vim.diagnostic.open_float()<CR>")
+
 vim.keymap.set("n", "<leader>.", function()
 	require("telescope.builtin").find_files({})
 end)

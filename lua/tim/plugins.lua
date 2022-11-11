@@ -258,7 +258,7 @@ return require("packer").startup(function()
 	-- use {
 	--   "ray-x/go.nvim",
 	--   config = function()
-	--     local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+	--     local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 	--     require("go").setup({
 	--       lsp_cfg = {
 	--         on_attach = require("tim.lsp-config").on_attach,
@@ -300,24 +300,26 @@ return require("packer").startup(function()
 	})
 	use({ "vim-scripts/restore_view.vim" })
 	use({
-		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-		config = function()
-			require("lsp_lines").setup()
-		end,
-	})
-	use({
 		"synaptiko/xit.nvim",
-    opt = true,
-    ft = "xit",
+		opt = true,
+		ft = "xit",
 		run = function(plugin)
 			plugin.config()
 			vim.cmd([[:TSInstall! xit]])
 		end,
 		config = function()
 			require("xit").setup({
-        disable_default_highlights = false
-      })
+				disable_default_highlights = false,
+			})
 		end,
 		requires = { "nvim-treesitter/nvim-treesitter" },
+	})
+	use({
+		"nvim-neorg/neorg",
+		ft = "norg",
+		after = "nvim-treesitter", -- You may want to specify Telescope here as well
+		config = function()
+			require("neorg").setup({})
+		end,
 	})
 end)
