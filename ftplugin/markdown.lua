@@ -94,15 +94,15 @@ end
 local is_workhours_table = function(tbl)
 	local header = tbl[1]
 	local a = string.find(header, "Event")
-	local b = string.find(header, "Time of day")
+	local b = string.find(header, "Time")
 	return a and b
 end
 
 local is_ticket_table = function(tbl)
 	local header = tbl[1]
 	local a = string.find(header, "Ticket")
-	local b = string.find(header, "Doings")
-	local c = string.find(header, "Time spent")
+	local b = string.find(header, "Description")
+	local c = string.find(header, "Time")
 	return a and b and c
 end
 

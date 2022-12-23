@@ -21,31 +21,50 @@ vim.o.lbr = true
 vim.o.signcolumn = "yes"
 vim.o.laststatus = 3
 vim.o.mouse = nil
+vim.o.undofile = true
 
-vim.diagnostic.config { virtual_text = false }
+vim.diagnostic.config({ virtual_text = false })
 
 vim.api.nvim_set_var("python3_host_prog", "/usr/bin/python")
 
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+	[[
   set clipboard+=unnamedplus
   filetype plugin indent on
   set noswapfile
   set noshowmode
-]], true)
+]],
+	true
+)
 
-local format_on_save = "format_on_save"
-vim.api.nvim_create_augroup(format_on_save, { clear = true })
-vim.api.nvim_create_autocmd({
-  "BufWritePost *.lua,*.json,*.html,*.js,*.ts,*.tsx,*.cpp"
-}, { command = "FormatWrite", group = format_on_save })
+vim.cmd([[
+  augroup FormatAutogroup
+    autocmd!
+    autocmd BufWritePost * FormatWrite
+  augroup END
+]])
 
 local disabled_built_ins = {
-  "netrw", "netrwPlugin", "netrwSettings", "netrwFileHandlers",
-  "gzip", "zip", "zipPlugin", "tar", "tarPlugin", "getscript",
-  "getscriptPlugin", "vimball", "vimballPlugin", "2html_plugin",
-  "logipat", "rrhelper", "spellfile_plugin", "matchit"
+	"netrw",
+	"netrwPlugin",
+	"netrwSettings",
+	"netrwFileHandlers",
+	"gzip",
+	"zip",
+	"zipPlugin",
+	"tar",
+	"tarPlugin",
+	"getscript",
+	"getscriptPlugin",
+	"vimball",
+	"vimballPlugin",
+	"2html_plugin",
+	"logipat",
+	"rrhelper",
+	"spellfile_plugin",
+	"matchit",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
-  vim.g["loaded_" .. plugin] = 1
+	vim.g["loaded_" .. plugin] = 1
 end

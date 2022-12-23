@@ -35,52 +35,15 @@ return require("packer").startup(function()
 	use({
 		"mhartington/formatter.nvim",
 		config = function()
-			local prettierConfig = function()
-				return {
-					exe = "prettier",
-					args = {
-						"--stdin-filepath",
-						vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)),
-					},
-					stdin = true,
-				}
-			end
 			require("formatter").setup({
 				filetype = {
-					lua = {
-						function()
-							local util = require("formatter.util")
-							return {
-								exe = "stylua",
-								stdin = true,
-								args = {
-									"--search-parent-directories",
-									"--stdin-filepath",
-									util.escape_path(util.get_current_buffer_file_path()),
-									"--",
-									"-",
-								},
-							}
-						end,
-					},
-					json = { prettierConfig },
-					html = { prettierConfig },
-					javascript = { prettierConfig },
-					typescript = { prettierConfig },
-					typescriptreact = { prettierConfig },
-					cpp = {
-						function()
-							return {
-								exe = "clang-format",
-								args = {
-									"--assume-filename",
-									vim.api.nvim_buf_get_name(0),
-								},
-								stdin = true,
-								cwd = vim.fn.expand("%:p:h"), -- Run clang-format in cwd of the file
-							}
-						end,
-					},
+					lua = { require("formatter.filetypes.lua").stylua },
+					json = { require("formatter.filetypes.json").prettier },
+					html = { require("formatter.filetypes.html").prettier },
+					javascript = { require("formatter.filetypes.javascript").prettier },
+					typescript = { require("formatter.filetypes.typescript").prettier },
+					typescriptreact = { require("formatter.filetypes.typescriptreact").prettier },
+					cpp = { require("formatter.filetypes.cpp").clangformat },
 				},
 			})
 		end,
@@ -224,7 +187,6 @@ return require("packer").startup(function()
 			end)
 		end,
 	})
-	use({ "nathom/filetype.nvim" })
 	use({
 		"max397574/better-escape.nvim",
 		config = function()
@@ -255,28 +217,29 @@ return require("packer").startup(function()
 			})
 		end,
 	})
-	-- use {
-	--   "ray-x/go.nvim",
-	--   config = function()
-	--     local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-	--     require("go").setup({
-	--       lsp_cfg = {
-	--         on_attach = require("tim.lsp-config").on_attach,
-	--         capabilities = capabilities,
-	--         flags = { debounce_text_changes = 150 }
-	--       }
-	--     })
-	--     local format_on_save = "format_on_save"
-	--     vim.api.nvim_create_augroup(format_on_save, { clear = true })
-	--     vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-	--       pattern = "*.go",
-	--       callback = function()
-	--         require("go.format").goimport()
-	--       end,
-	--       group = format_on_save
-	--     })
-	--   end
-	-- }
+	use({
+		"ray-x/go.nvim",
+		config = function()
+			local capabilities =
+				require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+			require("go").setup({
+				lsp_cfg = {
+					on_attach = require("tim.lsp-config").on_attach,
+					capabilities = capabilities,
+					flags = { debounce_text_changes = 150 },
+				},
+			})
+			local format_on_save = "format_on_save"
+			vim.api.nvim_create_augroup(format_on_save, { clear = true })
+			vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+				pattern = "*.go",
+				callback = function()
+					require("go.format").goimport()
+				end,
+				group = format_on_save,
+			})
+		end,
+	})
 	use({ "wellle/targets.vim" })
 	use({ "jesseschalken/list-text-object", after = { "targets.vim" } })
 	use({
@@ -321,5 +284,8 @@ return require("packer").startup(function()
 		config = function()
 			require("neorg").setup({})
 		end,
+	})
+	use({
+		"junegunn/vim-easy-align",
 	})
 end)
