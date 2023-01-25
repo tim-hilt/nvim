@@ -22,6 +22,7 @@ vim.o.signcolumn = "yes"
 vim.o.laststatus = 3
 vim.o.mouse = nil
 vim.o.undofile = true
+vim.o.background = "dark"
 
 vim.diagnostic.config({ virtual_text = false })
 
@@ -42,6 +43,8 @@ vim.cmd([[
     autocmd!
     autocmd BufWritePost * FormatWrite
   augroup END
+
+  colorscheme gruvbox
 ]])
 
 local disabled_built_ins = {
