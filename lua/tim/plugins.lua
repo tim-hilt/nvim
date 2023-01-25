@@ -96,7 +96,11 @@ return require("packer").startup(function()
 	use({
 		"ellisonleao/gruvbox.nvim",
 		config = function()
-			require("gruvbox").setup({})
+			require("gruvbox").setup({
+				overrides = {
+					SignColumn = { bg = "#ff9900" },
+				},
+			})
 		end,
 	})
 	-- use({
