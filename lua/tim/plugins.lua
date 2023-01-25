@@ -98,7 +98,7 @@ return require("packer").startup(function()
 		config = function()
 			require("gruvbox").setup({
 				overrides = {
-					SignColumn = { bg = "#282828" },
+					SignColumn = { bg = "#ff0000" },
 				},
 			})
 		end,
@@ -255,3 +255,4 @@ return require("packer").startup(function()
 	})
 	use({ "vim-scripts/restore_view.vim" })
 end)
+
