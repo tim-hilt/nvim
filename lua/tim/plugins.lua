@@ -97,10 +97,11 @@ return require("packer").startup(function()
 		"ellisonleao/gruvbox.nvim",
 		config = function()
       local colors = require('gruvbox.palette')
-require('gruvbox').setup({
-  overrides = {
-    SignColumn = { bg = colors.dark0 }, -- depending on your background and contrast this can vary.
-  }
+      require('gruvbox').setup({
+        overrides = {
+          SignColumn = { bg = colors.dark0 }, -- depending on your background and contrast this can vary.
+        }
+      })
 		end,
 	})
 	-- use({
