@@ -45,6 +45,11 @@ vim.cmd([[
   augroup END
 
   colorscheme gruvbox
+  
+  augroup myColors
+    autocmd!
+    autocmd ColorScheme * highlight SignColumn ctermbg=red
+  augroup END
 ]])
 
 local disabled_built_ins = {
