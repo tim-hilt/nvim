@@ -253,14 +253,6 @@ return require("packer").startup(function()
 	})
 	use({ "vim-scripts/restore_view.vim" })
 	use({
-		"nvim-neorg/neorg",
-		ft = "norg",
-		after = "nvim-treesitter", -- You may want to specify Telescope here as well
-		config = function()
-			require("neorg").setup({})
-		end,
-	})
-	use({
 		"junegunn/vim-easy-align",
 	})
 end)
