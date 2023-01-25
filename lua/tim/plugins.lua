@@ -100,15 +100,18 @@ return require("packer").startup(function()
 		end,
 	})
 	use({
-		"nvim-lualine/lualine.nvim",
-		after = "github-nvim-theme",
-		requires = { "kyazdani42/nvim-web-devicons", opt = true },
-		config = function()
-			require("lualine").setup({
-				options = { theme = "auto", globalstatus = true },
-			})
-		end,
+		"ellisonleao/gruvbox.nvim",
 	})
+	-- use({
+	-- 	"nvim-lualine/lualine.nvim",
+	-- 	after = "github-nvim-theme",
+	-- 	requires = { "kyazdani42/nvim-web-devicons", opt = true },
+	-- 	config = function()
+	-- 		require("lualine").setup({
+	-- 			options = { theme = "auto", globalstatus = true },
+	-- 		})
+	-- 	end,
+	-- })
 	use({
 		"nvim-telescope/telescope.nvim",
 		config = require("tim.telescope-config").config,
