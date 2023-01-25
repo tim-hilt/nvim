@@ -98,7 +98,7 @@ return require("packer").startup(function()
 		config = function()
 			require("gruvbox").setup({
 				overrides = {
-					SignColumn = { bg = "#ff9900" },
+					SignColumn = { bg = "#282828" },
 				},
 			})
 		end,
