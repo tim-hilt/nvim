@@ -107,7 +107,7 @@ return require("packer").startup(function()
 	-- })
 	use({
 		"nvim-lualine/lualine.nvim",
-		after = "gruvbox.",
+		after = "gruvbox.nvim.",
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 		config = function()
 			require("lualine").setup({
