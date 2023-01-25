@@ -101,6 +101,9 @@ return require("packer").startup(function()
 	})
 	use({
 		"ellisonleao/gruvbox.nvim",
+		config = function()
+			require("gruvbox").setup({})
+		end
 	})
 	-- use({
 	-- 	"nvim-lualine/lualine.nvim",
