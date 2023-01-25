@@ -145,21 +145,6 @@ return require("packer").startup(function()
 	})
 	use({ "junegunn/rainbow_parentheses.vim" })
 	use({
-		"mickael-menu/zk-nvim",
-		config = function()
-			require("zk").setup({
-				picker = "telescope",
-				lsp = {
-					config = {
-						cmd = { "zk", "lsp" },
-						name = "zk",
-						on_attach = require("tim.lsp-config").on_attach,
-					},
-				},
-			})
-		end,
-	})
-	use({
 		"preservim/vim-markdown",
 		config = function()
 			vim.api.nvim_exec(
