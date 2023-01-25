@@ -253,21 +253,6 @@ return require("packer").startup(function()
 	})
 	use({ "vim-scripts/restore_view.vim" })
 	use({
-		"synaptiko/xit.nvim",
-		opt = true,
-		ft = "xit",
-		run = function(plugin)
-			plugin.config()
-			vim.cmd([[:TSInstall! xit]])
-		end,
-		config = function()
-			require("xit").setup({
-				disable_default_highlights = false,
-			})
-		end,
-		requires = { "nvim-treesitter/nvim-treesitter" },
-	})
-	use({
 		"nvim-neorg/neorg",
 		ft = "norg",
 		after = "nvim-treesitter", -- You may want to specify Telescope here as well
