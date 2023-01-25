@@ -93,18 +93,18 @@ return require("packer").startup(function()
 		},
 		after = "nvim-autopairs",
 	})
-	-- use({
-	-- 	"projekt0n/github-nvim-theme",
-	-- 	config = function()
-	-- 		require("github-theme").setup({})
-	-- 	end,
-	-- })
 	use({
 		"ellisonleao/gruvbox.nvim",
 		config = function()
 			require("gruvbox").setup({})
 		end,
 	})
+	-- use({
+	-- 	"projekt0n/github-nvim-theme",
+	-- 	config = function()
+	-- 		require("github-theme").setup({})
+	-- 	end,
+	-- })
 	-- use({
 	-- 	"nvim-lualine/lualine.nvim",
 	-- 	after = "github-nvim-theme",
