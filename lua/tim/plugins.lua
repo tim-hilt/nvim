@@ -96,11 +96,7 @@ return require("packer").startup(function()
 	use({
 		"ellisonleao/gruvbox.nvim",
 		config = function()
-			require("gruvbox").setup({
-				overrides = {
-					SignColumn = { fg = "#ff0000" },
-				},
-			})
+			require("gruvbox").setup({})
 		end,
 	})
 	-- use({
@@ -255,4 +251,3 @@ return require("packer").startup(function()
 	})
 	use({ "vim-scripts/restore_view.vim" })
 end)
-
