@@ -96,9 +96,7 @@ return require("packer").startup(function()
 	use({
 		"ellisonleao/gruvbox.nvim",
 		config = function()
-			require("gruvbox").setup({
-        invert_signs = true
-      })
+			require("gruvbox").setup({})
 		end,
 	})
 	-- use({
