@@ -252,7 +252,4 @@ return require("packer").startup(function()
 		end,
 	})
 	use({ "vim-scripts/restore_view.vim" })
-	use({
-		"junegunn/vim-easy-align",
-	})
 end)
