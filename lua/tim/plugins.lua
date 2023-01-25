@@ -162,8 +162,6 @@ return require("packer").startup(function()
 			require("nvim-autopairs").setup({})
 		end,
 	})
-	use({ "lewis6991/impatient.nvim" })
-	use({ "dstein64/vim-startuptime" })
 	use({
 		"phaazon/hop.nvim",
 		config = function()
