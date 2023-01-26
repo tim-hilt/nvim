@@ -45,6 +45,7 @@ vim.cmd([[
   augroup END
 
   colorscheme gruvbox
+  highlight! link SignColumn Normal
 ]])
 
 local disabled_built_ins = {
