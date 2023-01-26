@@ -46,6 +46,15 @@ vim.cmd([[
 
   colorscheme gruvbox
   highlight! link SignColumn Normal
+
+  highlight GitSignsAdd guibg=NONE
+  highlight GitSignsAdd guifg=#b8bb26
+  
+  highlight GitSignsChange guibg=NONE
+  highlight GitSignsChange guifg=#8ec07c
+  
+  highlight GitSignsDelete guibg=NONE
+  highlight GitSignsDelete guifg=#fb4934
 ]])
 
 local disabled_built_ins = {
