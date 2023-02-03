@@ -55,6 +55,8 @@ vim.cmd([[
   
   highlight GitSignsDelete guibg=NONE
   highlight GitSignsDelete guifg=#fb4934
+
+  let g:ruby_host_prog = '/home/tim/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
 ]])
 
 local disabled_built_ins = {
