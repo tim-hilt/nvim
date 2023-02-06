@@ -46,6 +46,15 @@ vim.keymap.set("n", "<leader>s", function()
 	require("telescope.builtin").live_grep(opts)
 end)
 
+local hop = require("hop")
+
+vim.keymap.set("n", "s", function()
+	hop.hint_char2({})
+end)
+vim.keymap.set("v", "s", function()
+	hop.hint_char2({})
+end)
+
 vim.api.nvim_exec(
 	[[
   nnoremap <up> <nop>

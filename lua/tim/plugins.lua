@@ -168,12 +168,6 @@ return require("packer").startup(function()
 		config = function()
 			local hop = require("hop")
 			hop.setup({ keys = "tnseriaodhvk" })
-			vim.keymap.set("n", "s", function()
-				hop.hint_char2({})
-			end)
-			vim.keymap.set("v", "s", function()
-				hop.hint_char2({})
-			end)
 		end,
 	})
 	use({
