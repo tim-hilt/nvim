@@ -246,4 +246,10 @@ return require("packer").startup(function()
 	})
 	use({ "vim-scripts/restore_view.vim" })
 	use({ "maxbrunsfeld/vim-yankstack" })
+	use({
+		"folke/which-key.nvim",
+		config = function()
+			require("which-key").setup({})
+		end,
+	})
 end)
