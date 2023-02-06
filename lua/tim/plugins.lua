@@ -245,12 +245,12 @@ return require("packer").startup(function()
 		end,
 	})
 	use({ "vim-scripts/restore_view.vim" })
-	use({ "maxbrunsfeld/vim-yankstack" })
+	-- use({ "maxbrunsfeld/vim-yankstack" })
 	use({
 		"folke/which-key.nvim",
 		config = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
 			require("which-key").setup({})
 		end,
 	})
