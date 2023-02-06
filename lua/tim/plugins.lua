@@ -122,6 +122,7 @@ return require("packer").startup(function()
 		after = { "telescope-fzf-native.nvim" },
 	})
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	use({ "bogado/file-line" })
 	use({
 		"folke/todo-comments.nvim",
 		config = function()
