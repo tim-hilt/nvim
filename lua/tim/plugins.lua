@@ -52,10 +52,10 @@ return require("packer").startup(function()
 									args = {
 										"fmt"
 									},
-								}
+								},
 							end
-						}
-					}
+						},
+					},
 				},
 			})
 		end,
