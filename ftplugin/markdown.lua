@@ -214,12 +214,6 @@ vim.keymap.set("i", "<cr>", function()
 	local r, c = unpack(vim.api.nvim_win_get_cursor(0))
 	local next_line = vim.api.nvim_buf_get_lines(0, r, r + 1, false)[1]
 
-	local num_pipes_next_line = 0
-
-	if next_line ~= nil then
-		_, num_pipes_next_line = next_line:gsub("|", "")
-	end
-
 	local leading_whitespace = l:match("^%s*")
 	local todo_item_prefix = leading_whitespace .. "- [ ] "
 	local before_cursor = l:sub(1, c)
