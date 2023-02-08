@@ -11,6 +11,7 @@ M.config = function()
 			"fish",
 			"comment",
 			"cpp",
+			"terraform",
 		},
 		highlight = { enable = true },
 		autotag = { enable = true },
