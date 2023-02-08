@@ -1,11 +1,3 @@
-if require("zk.util").notebook_root(vim.fn.expand("%:p")) ~= nil then
-	local function map(...)
-		vim.api.nvim_buf_set_keymap(0, ...)
-	end
-	local opts = { noremap = true, silent = false }
-	map("v", "<leader>n", ":'<,'>ZkNewFromTitleSelection { dir = vim.fn.expand('%:p:h') }<CR>", opts)
-end
-
 local get_column_value = function(column_num, row)
 	local search_from = 2
 	local num_searches = 0
