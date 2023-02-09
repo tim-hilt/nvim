@@ -44,18 +44,16 @@ return require("packer").startup(function()
 					typescript = { require("formatter.filetypes.typescript").prettier },
 					typescriptreact = { require("formatter.filetypes.typescriptreact").prettier },
 					cpp = { require("formatter.filetypes.cpp").clangformat },
-					filetype = {
-						terraform = {
-							function()
-                print("format ran!")
-								return {
-									exe = "terraform",
-									args = {
-										"fmt",
-									},
-								}
-							end,
-						},
+					terraform = {
+						function()
+							print("format ran!")
+							return {
+								exe = "terraform",
+								args = {
+									"fmt",
+								},
+							}
+						end,
 					},
 				},
 			})
