@@ -38,7 +38,6 @@ return require("packer").startup(function()
 			require("formatter").setup({
 				filetype = {
 					lua = { require("formatter.filetypes.lua").stylua },
-					json = { require("formatter.filetypes.json").prettier },
 					html = { require("formatter.filetypes.html").prettier },
 					javascript = { require("formatter.filetypes.javascript").prettier },
 					typescript = { require("formatter.filetypes.typescript").prettier },
