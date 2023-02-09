@@ -47,6 +47,7 @@ return require("packer").startup(function()
 					filetype = {
 						terraform = {
 							function()
+                print("format ran!")
 								return {
 									exe = "terraform",
 									args = {
