@@ -46,7 +46,6 @@ return require("packer").startup(function()
 					cpp = { require("formatter.filetypes.cpp").clangformat },
 					terraform = {
 						function()
-							print("format ran!")
 							return {
 								exe = "terraform",
 								args = {
