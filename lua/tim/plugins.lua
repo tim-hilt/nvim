@@ -50,9 +50,9 @@ return require("packer").startup(function()
 								exe = "terraform",
 								args = {
 									"fmt",
-									"-write=true",
 									"-",
 								},
+								stdin = true,
 							}
 						end,
 					},
