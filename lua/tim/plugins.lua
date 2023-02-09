@@ -50,6 +50,7 @@ return require("packer").startup(function()
 								exe = "terraform",
 								args = {
 									"fmt",
+									"-",
 								},
 							}
 						end,
