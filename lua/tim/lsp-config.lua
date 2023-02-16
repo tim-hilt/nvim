@@ -51,6 +51,7 @@ M.config = function()
 		flags = { debounce_text_changes = 150 },
 	})
 
+  -- TODO: sumneko_lua is deprecated. Switch to something else!
 	lsp.sumneko_lua.setup({
 		on_attach = on_attach,
 		capabilities = capabilities,
