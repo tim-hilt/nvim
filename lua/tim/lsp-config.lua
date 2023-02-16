@@ -51,33 +51,33 @@ M.config = function()
 		flags = { debounce_text_changes = 150 },
 	})
 
-  -- TODO: sumneko_lua is deprecated. Switch to something else!
-	lsp.sumneko_lua.setup({
-		on_attach = on_attach,
-		capabilities = capabilities,
-		flags = { debounce_text_changes = 150 },
-		cmd = {
-			"/usr/bin/lua-language-server",
-			"-E",
-			"/usr/lib/lua-language-server/main.lua",
-		},
-		settings = {
-			Lua = {
-				runtime = {
-					version = "LuaJIT",
-					path = vim.split(package.path, ";"),
-				},
-				diagnostics = { enable = true, globals = { "vim", "use" } },
-				workspace = {
-					library = {
-						[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-						[vim.fn.expand("$VIMRUNTIME/lua/vim")] = true,
-						[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-					},
-				},
-			},
-		},
-	})
+	-- TODO: sumneko_lua is deprecated. Switch to something else!
+	-- lsp.sumneko_lua.setup({
+	-- 	on_attach = on_attach,
+	-- 	capabilities = capabilities,
+	-- 	flags = { debounce_text_changes = 150 },
+	-- 	cmd = {
+	-- 		"/usr/bin/lua-language-server",
+	-- 		"-E",
+	-- 		"/usr/lib/lua-language-server/main.lua",
+	-- 	},
+	-- 	settings = {
+	-- 		Lua = {
+	-- 			runtime = {
+	-- 				version = "LuaJIT",
+	-- 				path = vim.split(package.path, ";"),
+	-- 			},
+	-- 			diagnostics = { enable = true, globals = { "vim", "use" } },
+	-- 			workspace = {
+	-- 				library = {
+	-- 					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+	-- 					[vim.fn.expand("$VIMRUNTIME/lua/vim")] = true,
+	-- 					[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 	},
+	-- })
 end
 
 M.on_attach = on_attach
