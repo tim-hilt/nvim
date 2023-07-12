@@ -43,10 +43,100 @@ vim.o.background = "dark"
 
 vim.diagnostic.config({ virtual_text = false })
 
--- TODO: nvim-cmp + lsp for lua
--- TODO: colorscheme
+-- TODO: Make more modular with plugins-dir
 
 require("lazy").setup({
+	{
+		"neovim/nvim-lspconfig",
+		config = function()
+			require("lspconfig").lua_ls.setup({
+				settings = {
+					Lua = {
+						completion = {
+							callSnippet = "Replace",
+						},
+						runtime = {
+							version = "LuaJIT",
+						},
+						diagnostics = {
+							globals = { "vim" },
+						},
+						workspace = {
+							library = vim.api.nvim_get_runtime_file("", true),
+						},
+						telemetry = {
+							enable = false,
+						},
+					},
+				},
+			})
+		end,
+		dependencies = {
+			"hrsh7th/nvim-cmp",
+			"folke/neodev.nvim",
+		},
+	},
+	{
+		"hrsh7th/nvim-cmp",
+		config = function()
+			local cmp = require("cmp")
+
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						require("luasnip").lsp_expand(args.body)
+					end,
+				},
+
+				mapping = cmp.mapping.preset.insert({
+					["<C-b>"] = cmp.mapping.scroll_docs(-4),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-e>"] = cmp.mapping.abort(),
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
+				}),
+
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+				}, {
+					{ name = "buffer" },
+				}),
+			})
+
+			cmp.setup.cmdline({ "/", "?" }, {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = {
+					{ name = "buffer" },
+				},
+			})
+
+			cmp.setup.cmdline(":", {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = cmp.config.sources({
+					{ name = "path" },
+				}, {
+					{ name = "cmdline" },
+				}),
+			})
+
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			require("lspconfig")["lua_ls"].setup({
+				capabilities = capabilities,
+			})
+		end,
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+		},
+	},
+	{
+		"folke/neodev.nvim",
+		opts = {},
+	},
 	{
 		"projekt0n/github-nvim-theme",
 		config = function()
