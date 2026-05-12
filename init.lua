@@ -25,7 +25,6 @@ vim.keymap.set("n", "'", function() vim.cmd(":wa") end)
 
 vim.wo.number = true
 
--- TODO
--- * copy to unamedplus
--- * Highlight current line
+vim.opt.clipboard = "unnamedplus"
+vim.opt.cursorline = true
 
