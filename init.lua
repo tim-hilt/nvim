@@ -27,6 +27,7 @@ vim.wo.number = true
 
 vim.opt.clipboard = "unnamedplus"
 vim.opt.cursorline = true
+vim.opt.undofile = true
 
 vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
