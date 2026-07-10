@@ -1,7 +1,9 @@
 vim.pack.add({
 	"https://github.com/smoka7/hop.nvim",
 	"https://github.com/max397574/better-escape.nvim",
-	"https://github.com/HiPhish/rainbow-delimiters.nvim"
+	"https://github.com/HiPhish/rainbow-delimiters.nvim",
+	"https://github.com/lewis6991/gitsigns.nvim",
+	"https://github.com/windwp/nvim-autopairs"
 })
 
 local hop = require("hop")
