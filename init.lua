@@ -3,7 +3,8 @@ vim.pack.add({
 	"https://github.com/max397574/better-escape.nvim",
 	"https://github.com/HiPhish/rainbow-delimiters.nvim",
 	"https://github.com/lewis6991/gitsigns.nvim",
-	"https://github.com/windwp/nvim-autopairs"
+	"https://github.com/windwp/nvim-autopairs",
+	"https://github.com/neogitorg/neogit"
 })
 
 local hop = require("hop")
@@ -23,13 +24,13 @@ require("better_escape").setup {
 
 require("rainbow-delimiters.setup").setup()
 
-vim.keymap.set("n", "'", function() vim.cmd(":wa") end)
-
 vim.wo.number = true
 
 vim.opt.clipboard = "unnamedplus"
 vim.opt.cursorline = true
 vim.opt.undofile = true
+
+vim.g.mapleader = " "
 
 vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
@@ -39,4 +40,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end
   end,
 })
+
+vim.keymap.set("n", "'", function() vim.cmd(":wa") end)
+vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Open Neogit UI" })
 
