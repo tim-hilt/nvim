@@ -22,8 +22,6 @@ require("better_escape").setup {
     },
 }
 
-require("rainbow-delimiters.setup").setup()
-
 vim.wo.number = true
 
 vim.opt.clipboard = "unnamedplus"
