@@ -8,7 +8,8 @@ vim.pack.add(
         "https://github.com/neogitorg/neogit",
         "https://github.com/nvim-lua/plenary.nvim",
         "https://github.com/nvim-telescope/telescope.nvim",
-        "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
+        "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
+	"https://github.com/windwp/nvim-autopairs",
     }
 )
 
@@ -102,3 +103,6 @@ vim.keymap.set(
         require("telescope.builtin").find_files(opts)
     end
 )
+
+require("nvim-autopairs").setup()
+
