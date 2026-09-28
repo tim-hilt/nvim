@@ -33,6 +33,8 @@ vim.wo.number = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.cursorline = true
 vim.opt.undofile = true
+vim.opt.linebreak = true
+vim.opt.breakindent = true
 
 vim.g.mapleader = " "
 
