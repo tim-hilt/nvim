@@ -100,6 +100,10 @@
       "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",
       "src": "https://github.com/folke/todo-comments.nvim"
     },
+    "vim-sleuth": {
+      "rev": "be69bff86754b1aa5adcbb527d7fcd1635a84080",
+      "src": "https://github.com/tpope/vim-sleuth"
+    },
     "yanky.nvim": {
       "rev": "784188e0a7363e762e53140f39124d786aec0832",
       "src": "https://github.com/gbprod/yanky.nvim"

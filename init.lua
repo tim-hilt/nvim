@@ -3,6 +3,7 @@ vim.pack.add(
         "https://github.com/smoka7/hop.nvim",
         "https://github.com/max397574/better-escape.nvim",
         "https://github.com/HiPhish/rainbow-delimiters.nvim",
+        "https://github.com/tpope/vim-sleuth",
         "https://github.com/lewis6991/gitsigns.nvim",
         "https://github.com/windwp/nvim-autopairs",
         "https://github.com/neogitorg/neogit",
@@ -35,6 +36,11 @@ vim.opt.cursorline = true
 vim.opt.undofile = true
 vim.opt.linebreak = true
 vim.opt.breakindent = true
+
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = -1
+vim.opt.autoindent = true
 
 vim.g.mapleader = " "
 
