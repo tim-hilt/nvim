@@ -156,6 +156,20 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("i", "<CR>", list_enter,
       vim.tbl_extend("force", opts, { desc = "Continue markdown list" }))
 
+    -- o: new list item below at the same indentation
+    vim.keymap.set("n", "o", function()
+      local row = vim.api.nvim_win_get_cursor(0)[1]
+      local indent = vim.api.nvim_get_current_line():match("^(%s*)%- ")
+      if not indent then
+        vim.api.nvim_feedkeys("o", "n", false)
+        return
+      end
+      local new = indent .. "- "
+      vim.api.nvim_buf_set_lines(0, row, row, true, { new })
+      vim.api.nvim_win_set_cursor(0, { row + 1, #new })
+      vim.cmd("startinsert!")
+    end, vim.tbl_extend("force", opts, { desc = "New markdown list item below" }))
+
     -- <Tab>: indent a list item, otherwise a normal tab
     vim.keymap.set("i", "<Tab>", function()
       if vim.api.nvim_get_current_line():match("^%s*%- ") then
